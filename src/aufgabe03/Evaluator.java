@@ -11,7 +11,7 @@
 package aufgabe03;
 
 import java.util.Scanner;
-import static expressionevaluation.Tokenizer.*;
+import static aufgabe03.Tokenizer.*;
 
 /**
  * Klasse zum Auswerten von arithmetischen Ausdrücken.
