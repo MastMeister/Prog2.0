@@ -10,7 +10,10 @@
  */
 package aufgabe03;
 
+import java.util.Arrays;
 import java.util.Scanner;
+
+
 import static aufgabe03.Tokenizer.*;
 
 /**
@@ -30,6 +33,7 @@ public class Evaluator {
      * @param expr Arthmetischer Ausdruck als String
      * @return Wert des Ausdrucks oder null, falls der Ausdruck fehlerhaft ist.
      */
+    // TODO Regel 9 und While Schleife in eval und repl
     public static Double eval(String expr) {
         // Dollar in leeren Stack ablegen:
         top = -1;
@@ -42,16 +46,35 @@ public class Evaluator {
         while (token != null) {
             // Ihr Code:
             // ...
+
+
         }
         return null;
     }
 
     private static boolean shift() {
-        if (stack[top] == DOLLAR && (token == KL_AUF || isVal(token))) {		// Regel 1 der Parser-Tabelle
+        if ( stack[top] == DOLLAR && (token == KL_AUF || isVal(token)) ) {		// Regel 1 der Parser-Tabelle
             doShift();
             return true;
         } // Ihr Code:
-        // ... 
+        // ...
+        if(isOp(stack[top]) && (token == KL_AUF || isVal(token))){            // Regel 2 der Parser Tabelle
+            doShift();
+            return true;
+        }
+        if(stack[top] == KL_AUF && (token == KL_AUF || isVal(token))) {      // Regel 3 der Parser Tabelle
+            doShift();
+            return true;
+        }
+        if(isVal(stack[top]) && stack[top-1] == DOLLAR && isOp(token)) {      // Regel 6 der Parser Tabelle
+            doShift();
+            return true;
+        }
+        if(isVal(stack[top])  && stack[top-1] == KL_AUF && (isVal(token) || token == KL_ZU)) {      // Regel 7 der Parser Tabelle
+            doShift();
+            return true;
+        }
+
         else {
             return false;
         }
@@ -59,7 +82,11 @@ public class Evaluator {
 
     private static void doShift() {
         // Ihr Code:
-        // ... 
+        // ...
+        if(stack.length-1 == top)
+            stack = Arrays.copyOf(stack,2*stack.length);
+        stack[++top] = token;
+        token = tokenizer.nextToken();
     }
 
     private static boolean isOp(Object o) {
@@ -73,22 +100,56 @@ public class Evaluator {
     private static boolean reduce() {
         // Ihr Code:
         // ...
+        if(stack[top] == KL_ZU && isVal(stack[--top]) && stack[top-2] == KL_AUF  // Parser-Regel 4
+                &&( token == KL_ZU || isOp(token) || token == DOLLAR ) ){
+            doReduceKlValKl();
+            return true;
+        }
+        if(isVal(stack[top]) && isOp(stack[--top]) && isVal(stack[top-2])  // Parser-Regel 8
+                && ( token == KL_ZU || token == DOLLAR ) ) {
+            doReduceValOpVal();
+            return true;
+        }
+
         return false;
     }
 
     private static void doReduceKlValKl() {
         // Ihr Code:
         // ...
+        stack[top-2] = stack[top-1];
+        stack[top] = null;
+        stack[top-1] = null;
+        top = top -2;
+
     }
 
     private static void doReduceValOpVal() {
         // Ihr Code:
         // ...
+        double a = Double.parseDouble((String) stack[top]);
+        double b = Double.parseDouble((String) stack[top-2]);
+        Object o = stack[top-1];
+
+        if(o == PLUS){
+            stack[top-2] = b + a;
+        }
+        if(o == POWER){
+            stack[top-2] = Math.pow(b,a);
+        }
+        if(o == MULT){
+            stack[top-2] = b * a;
+        }
+        top = top-2;
     }
 
-    private static boolean accept() {
+    private static boolean accept() {   // Regel 5
         // Ihr Code:
         // ...
+        if(isVal(stack[top]) && stack[top-1] == DOLLAR && token == DOLLAR){
+            return true;
+        }
+
         return false;
     }
 
@@ -104,7 +165,10 @@ public class Evaluator {
             String line = in.nextLine();
             // Ihr Code:
             // ...
+
             System.out.print(ANSI_BLUE + ">> ");
+            System.out.printf(line);
+            System.out.println(eval(line));
         }
     }
 
