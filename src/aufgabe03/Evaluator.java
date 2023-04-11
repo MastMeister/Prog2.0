@@ -1,12 +1,12 @@
 /*
  * class Evaluator
- * repl-Schleife: lese von der Konsole eine Ziele und 
+ * repl-Schleife: lese von der Konsole eine Ziele und
  * werte sie als arithmetischen Ausdruck aus.
- * Da tokenizer String-Konstante zurückliefert, reicht 
+ * Da tokenizer String-Konstante zurückliefert, reicht
  * Gleichheitsprüfung mit == aus (siehe z.B. shift-Methode).
  *
  * Ihr Name:
- * Datum: 
+ * Datum:
  */
 package aufgabe03;
 
@@ -22,10 +22,10 @@ import static aufgabe03.Tokenizer.*;
 public class Evaluator {
 
     private static final String ANSI_BLUE = "\u001B[34m";
-    private static Object[] stack = new Object[10];		// Stack
-    private static int top = -1;					// Index des obersten Kellerelements
-    private static Object token;					// Aktuelles Token
-    private static Tokenizer tokenizer;				// Zerlegt String-Eingabe in Tokens
+    private static Object[] stack = new Object[10];        // Stack
+    private static int top = -1;                    // Index des obersten Kellerelements
+    private static Object token;                    // Aktuelles Token
+    private static Tokenizer tokenizer;                // Zerlegt String-Eingabe in Tokens
 
     /**
      * Wertet expr als arithmetischen Ausdruck aus.
@@ -46,6 +46,13 @@ public class Evaluator {
         while (token != null) {
             // Ihr Code:
             // ...
+            if (shift())
+                continue;
+            else if (reduce())
+                continue;
+            else if (accept())
+                return Double.parseDouble(stack[top].toString());
+            else return null;
 
 
         }
@@ -53,29 +60,27 @@ public class Evaluator {
     }
 
     private static boolean shift() {
-        if ( stack[top] == DOLLAR && (token == KL_AUF || isVal(token)) ) {		// Regel 1 der Parser-Tabelle
+        if (stack[top] == DOLLAR && (token == KL_AUF || isVal(token))) {        // Regel 1 der Parser-Tabelle
             doShift();
             return true;
         } // Ihr Code:
         // ...
-        if(isOp(stack[top]) && (token == KL_AUF || isVal(token))){            // Regel 2 der Parser Tabelle
+        if (isOp(stack[top]) && (token == KL_AUF || isVal(token))) {            // Regel 2 der Parser Tabelle
             doShift();
             return true;
         }
-        if(stack[top] == KL_AUF && (token == KL_AUF || isVal(token))) {      // Regel 3 der Parser Tabelle
+        if (stack[top] == KL_AUF && (token == KL_AUF || isVal(token))) {      // Regel 3 der Parser Tabelle
             doShift();
             return true;
         }
-        if(isVal(stack[top]) && stack[top-1] == DOLLAR && isOp(token)) {      // Regel 6 der Parser Tabelle
+        if (isVal(stack[top]) && stack[top - 1] == DOLLAR && isOp(token)) {      // Regel 6 der Parser Tabelle
             doShift();
             return true;
         }
-        if(isVal(stack[top])  && stack[top-1] == KL_AUF && (isVal(token) || token == KL_ZU)) {      // Regel 7 der Parser Tabelle
+        if (isVal(stack[top]) && stack[top - 1] == KL_AUF && (isOp(token) || token == KL_ZU)) {      // Regel 7 der Parser Tabelle
             doShift();
             return true;
-        }
-
-        else {
+        } else {
             return false;
         }
     }
@@ -83,8 +88,8 @@ public class Evaluator {
     private static void doShift() {
         // Ihr Code:
         // ...
-        if(stack.length-1 == top)
-            stack = Arrays.copyOf(stack,2*stack.length);
+        if (stack.length - 1 == top)
+            stack = Arrays.copyOf(stack, 2 * stack.length);
         stack[++top] = token;
         token = tokenizer.nextToken();
     }
@@ -100,14 +105,23 @@ public class Evaluator {
     private static boolean reduce() {
         // Ihr Code:
         // ...
-        if(stack[top] == KL_ZU && isVal(stack[--top]) && stack[top-2] == KL_AUF  // Parser-Regel 4
-                &&( token == KL_ZU || isOp(token) || token == DOLLAR ) ){
+        if (stack[top] == KL_ZU && isVal(stack[top - 1]) && stack[top - 2] == KL_AUF  // Parser-Regel 4
+                && (token == KL_ZU || isOp(token) || token == DOLLAR)) {
             doReduceKlValKl();
             return true;
         }
-        if(isVal(stack[top]) && isOp(stack[--top]) && isVal(stack[top-2])  // Parser-Regel 8
-                && ( token == KL_ZU || token == DOLLAR ) ) {
+        if (isVal(stack[top]) && isOp(stack[top - 1]) && isVal(stack[top - 2])  // Parser-Regel 8
+                && (token == KL_ZU || token == DOLLAR)) {
             doReduceValOpVal();
+            return true;
+        }
+        if (isVal(stack[top]) && isOp(stack[top - 1]) && isVal(stack[top - 2])  // Parser-Regel 9
+                && isOp(token)) {
+            if (token == MULT && stack[top - 1] == PLUS || token == POWER)
+                doShift();
+            else doReduceValOpVal();
+
+
             return true;
         }
 
@@ -117,40 +131,37 @@ public class Evaluator {
     private static void doReduceKlValKl() {
         // Ihr Code:
         // ...
-        stack[top-2] = stack[top-1];
+        stack[top - 2] = stack[top - 1];
         stack[top] = null;
-        stack[top-1] = null;
-        top = top -2;
+        stack[top - 1] = null;
+        top = top - 2;
 
     }
 
     private static void doReduceValOpVal() {
         // Ihr Code:
         // ...
-        double a = Double.parseDouble((String) stack[top]);
-        double b = Double.parseDouble((String) stack[top-2]);
-        Object o = stack[top-1];
 
-        if(o == PLUS){
-            stack[top-2] = b + a;
+        double a = Double.parseDouble(stack[top].toString());
+        double b = Double.parseDouble(stack[top - 2].toString());
+        Object o = stack[top - 1];
+
+        if (o == PLUS) {
+            stack[top - 2] = b + a;
         }
-        if(o == POWER){
-            stack[top-2] = Math.pow(b,a);
+        if (o == POWER) {
+            stack[top - 2] = Math.pow(b, a);
         }
-        if(o == MULT){
-            stack[top-2] = b * a;
+        if (o == MULT) {
+            stack[top - 2] = b * a;
         }
-        top = top-2;
+        top = top - 2;
     }
 
     private static boolean accept() {   // Regel 5
         // Ihr Code:
         // ...
-        if(isVal(stack[top]) && stack[top-1] == DOLLAR && token == DOLLAR){
-            return true;
-        }
-
-        return false;
+        return isVal(stack[top]) && stack[top - 1] == DOLLAR && token == DOLLAR;
     }
 
     /**
@@ -163,12 +174,22 @@ public class Evaluator {
 
         while (in.hasNextLine()) {
             String line = in.nextLine();
+            if(line.equals("end")) {
+                System.out.println("bye!");
+                break;
+            }
             // Ihr Code:
             // ...
-
-            System.out.print(ANSI_BLUE + ">> ");
-            System.out.printf(line);
+            Double temp = eval(line);
+            if(temp == null) {
+                System.out.println("!!! error");
+                System.out.print(ANSI_BLUE + ">> ");
+                continue;
+            }
             System.out.println(eval(line));
+            System.out.print(ANSI_BLUE + ">> ");
+
+
         }
     }
 
@@ -179,9 +200,11 @@ public class Evaluator {
      */
     public static void main(String[] args) {
         // Zum Testen, später auskommentieren:
-		String s1 = "1+2";
-		String s2 = "2^10+5";
-		String s3 = "5+2^10";
+        String test = "(1+2)";
+        System.out.println(eval(test));
+        String s1 = "1+2";
+        String s2 = "2^10+5";
+        String s3 = "5+2^10";
         String s4 = "(2+3*4+4)^2";
         String s5 = "(2+3*4+4))*2";
         String s6 = "2+3**4";
@@ -190,17 +213,16 @@ public class Evaluator {
         String s9 = "1+(2+(3+(4+(5+6))))";
         String s10 = "1+2+3+4+5+6";
 
-		System.out.println(eval(s1));	// 3.0
-		System.out.println(eval(s2));	// 1029.0
-        System.out.println(eval(s3));	// 1029.0
-        System.out.println(eval(s4));	// 324.0
-        System.out.println(eval(s5));	// null; Syntaxfehler
-        System.out.println(eval(s6));	// null; Syntaxfehler
-        System.out.println(eval(s7));	// 512.0
-        System.out.println(eval(s8));	// 20.0
-        System.out.println(eval(s9));	// 21.0
-        System.out.println(eval(s10));	// 21.0
-
-        // repl();
+        System.out.println(eval(s1));    // 3.0
+        System.out.println(eval(s2));    // 1029.0
+        System.out.println(eval(s3));    // 1029.0
+        System.out.println(eval(s4));    // 324.0
+        System.out.println(eval(s5));    // null; Syntaxfehler
+        System.out.println(eval(s6));    // null; Syntaxfehler
+        System.out.println(eval(s7));    // 512.0
+        System.out.println(eval(s8));    // 20.0
+        System.out.println(eval(s9));    // 21.0
+        System.out.println(eval(s10));    // 21.0
+         repl();
     }
 }
