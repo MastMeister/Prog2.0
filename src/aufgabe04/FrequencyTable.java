@@ -5,7 +5,7 @@ package aufgabe04;
  * @author oliverbittel
  * @since 12.2.2020
  */
-public interface FrequencyTable<T> {
+public interface FrequencyTable<T> extends Iterable<Element<T>>{
 	/**
 	 * Liefert die Anzahl der W&ouml;rter in dieser Tabelle zur&uuml;ck.
 	 * @return Anzahl der H&auml;ufigkeitseintr&auml;ge.
@@ -46,7 +46,7 @@ public interface FrequencyTable<T> {
 	 * fq bleibt unver&auml;ndert.
 	 * @param fq H&auml;ufigkeitstabelle.
 	 */
-	void addAll(FrequencyTable fq);
+	void addAll(FrequencyTable<? extends T> fq);
 
 	/**
 	 * Liefert das Wort mit seiner Häufigkeit zur&uuml;ck, das mit seiner H&auml;ufigkeit an Position pos steht.
@@ -56,7 +56,7 @@ public interface FrequencyTable<T> {
 	 * @return Wort mit H&auml;ufigkeit oder null, 
 	 * falls die Tabelle weniger als pos-1 Elemente  enth&auml;lt.  
 	 */
-	Word get(int pos);
+	Element<T> get(int pos);
 
 	/**
 	 * Liefert die H&auml;ufigkeit des Worts w zur&uuml;ck.
@@ -74,11 +74,11 @@ public interface FrequencyTable<T> {
 	 * tab2 = {"ein":3, "das":3}. 
 	 * @param fq H&auml;ufigkeitstabelle.
 	 */
-	void collectMostFrequent(FrequencyTable fq);
+	void collectMostFrequent(FrequencyTable<? super T> fq);
 	
 	/**
 	 * Sammelt alle W&ouml;rter mit der H&auml;ufigkeit 1 und speichert sie in fq.
 	 * @param fq H&auml;ufigkeitstabelle.
 	 */
-	void collectLeastFrequent(FrequencyTable fq);
+	void collectLeastFrequent(FrequencyTable<? super T> fq);
 }

@@ -7,9 +7,12 @@ package aufgabe04;
  */
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 public class ArrayFrequencyTable<T> extends AbstractFrequencyTable<T> {
 	private int size;
-	private Word[] fqTable;
+	private Element<T>[] fqTable;
 	private final int DEFAULT_SIZE = 100;
 
 	public ArrayFrequencyTable() {
@@ -37,7 +40,7 @@ public class ArrayFrequencyTable<T> extends AbstractFrequencyTable<T> {
 		// ...
 		;
 		this.size = 0;
-		this.fqTable = new Word[DEFAULT_SIZE];
+		this.fqTable = new Element[DEFAULT_SIZE];
 	}
 
 
@@ -64,13 +67,13 @@ public class ArrayFrequencyTable<T> extends AbstractFrequencyTable<T> {
 		}
 
 		if (this.isEmpty()) {//Wenn array leer ist ist an 1ste stelle des Arrays setzten
-			this.fqTable[0] = new Word(w, f);
+			this.fqTable[0] = new Element<T>(w, f);
 			this.size++;
 			return;
 		}
 		// wenn wort schon vorhanden ist erhöhen und dann sortieren
 		for (int l = 0; l< this.size();l++) {
-			if (this.fqTable[l].getWord().equals(w)) {
+			if (this.fqTable[l].getElement().equals(w)) {
 				this.fqTable[l].addFrequency(f);
 				moveToLeft(l);
 				return;
@@ -78,13 +81,13 @@ public class ArrayFrequencyTable<T> extends AbstractFrequencyTable<T> {
 		}
 		// wenn nicht vorhanden richtig einfügen
 		int b = size();
-		this.fqTable[b] = new Word(w,f);
+		this.fqTable[b] = new Element<T>(w,f);
 		this.size++;
 		moveToLeft(b);
 
 	} // METHODE um Wort an die richtige stelle zu bringen
 	public void moveToLeft(int pos){
-		Word w = this.fqTable[pos];
+		Element<T> w = this.fqTable[pos];
 		int i = pos -1;
 
 		while (i >= 0 && this.fqTable[i].getFrequency() < w.getFrequency()) {
@@ -97,7 +100,7 @@ public class ArrayFrequencyTable<T> extends AbstractFrequencyTable<T> {
 	}
 
 	@Override
-	public Word get(int pos) {
+	public Element<T> get(int pos) {
 		// throw muss noch auskommentiert werden!
 		//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 		// Ihr Code: 
@@ -116,11 +119,37 @@ public class ArrayFrequencyTable<T> extends AbstractFrequencyTable<T> {
 		// Ihr Code: 
 		// ...
 		for (int l = 0; l< this.size();l++) {
-			if (this.fqTable[l].getWord().equals(w)) {
+			if (this.fqTable[l].getElement().equals(w)) {
 				return this.fqTable[l].getFrequency();
 			}
 		}
 
 		return 0;
+	}
+
+	@Override
+	public Iterator<Element<T>> iterator() {
+		return new ArrayIterator();
+	}
+	private class ArrayIterator implements Iterator<Element<T>>{
+
+		private  int zeiger = 0;
+		@Override
+		public boolean hasNext() {
+			return zeiger<size();
+		}
+
+		@Override
+		public Element<T> next() {
+			if(hasNext()==false)
+				throw new NoSuchElementException();
+
+			return fqTable[zeiger++];
+		}
+
+		@Override
+		public void remove(){
+			throw new UnsupportedOperationException();
+		}
 	}
 }

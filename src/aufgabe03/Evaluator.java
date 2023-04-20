@@ -142,8 +142,10 @@ public class Evaluator {
         // Ihr Code:
         // ...
 
-        double a = Double.parseDouble(stack[top].toString());
-        double b = Double.parseDouble(stack[top - 2].toString());
+        //double a = Double.parseDouble(stack[top].toString());
+        //double b = Double.parseDouble(stack[top - 2].toString());
+        double a = (Double)stack[top];
+        double b = (Double)stack[top - 2];
         Object o = stack[top - 1];
 
         if (o == PLUS) {
@@ -200,8 +202,7 @@ public class Evaluator {
      */
     public static void main(String[] args) {
         // Zum Testen, später auskommentieren:
-        String test = "(1+2)";
-        System.out.println(eval(test));
+
         String s1 = "1+2";
         String s2 = "2^10+5";
         String s3 = "5+2^10";
