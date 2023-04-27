@@ -3,7 +3,7 @@ package aufgabe04;
 public abstract class Card {
     Suit suit;
     Rank rank;
-    public Card(Suit s, Rank r){
+    protected Card(Suit s, Rank r){
         this.rank = r;
         this.suit = s;
 
