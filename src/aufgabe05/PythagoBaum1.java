@@ -1,32 +1,69 @@
 package aufgabe05;
 
 public class PythagoBaum1 {
-    public static boolean drawRectangle(double w, double t,double g,double f){
+    public static double g = 10;
 
-        StdDraw.rectangle(w,t,g,f);
-        if(w == w+.5)
-            return true;
-        return drawRectangle(w+.1,t+.1,g+.1,f+.1);
-    }
     public static void main(String[] args) {
-        StdDraw.setCanvasSize(1000,500);
+        double omega = 30;
+        StdDraw.setCanvasSize(888,500);
+        StdDraw.setXscale(0 ,888);
+        StdDraw.setYscale(0,500);
+        StdDraw.setPenRadius(.005);
+        // rotiert mit winkel 30°
+       StdDraw.show(0);
+       int i = 3;
 
+       test(0,100,500,50);
+       StdDraw.show(0);
+//        test(0,100);
+//        StdDraw.show(0);
 
-       // drawRectangle(.4,.5,.2,.2);
-        StdDraw.show(0);
-        StdDraw.square(.25,0.25,.25);
-        StdDraw.line(0.25,0.25,.5,.5);
-        //StdDraw.
-        StdDraw.setPenRadius(0.05);
-        StdDraw.show(1000);
-        StdDraw.setPenColor(StdDraw.BLUE);
-        StdDraw.point(0.5, 0.5);
-        StdDraw.show(1000);
-        StdDraw.setPenColor(StdDraw.MAGENTA);
-        StdDraw.line(0.2, 0.2, 0.8, 0.2);
-        StdDraw.show(1000);
 
     }
+    private static void test(double w, double l,double ax,double ay){
+        System.out.println("Winkel :" + w+"\n Länge :" + l);
+        if(l< 5)
+            return;
+        if(l < 12 )
+            StdDraw.setPenColor(StdDraw.GREEN);
+        else
+        StdDraw.setPenColor(StdDraw.ORANGE);
+        StdDraw.setPenRadius(.005);
+        double winkel = Math.toRadians(w);
+        double omega = Math.toRadians(g);
+        double lange = l;
+        double AX = ax;
+        double AY = ay;
+        double c = lange * Math.cos(winkel);
+        double s = lange * Math.sin(winkel);
+        double BX = AX + c;
+        double BY = AY + s;
+        double CX = AX + c - s;
+        double CY = AY + s + c;
+        double DX = AX - s;
+        double DY = AY + c;
+        double u = lange*Math.cos(omega );
+        double v = lange*Math.sin(omega );
+        double EX = DX + u*(Math.cos(winkel + omega));
+        double EY = DY + u*Math.sin(winkel + omega);
+
+        StdDraw.line(AX, AY, BX, BY);
+        StdDraw.line(AX, AY, DX, DY);
+        StdDraw.line(CX, CY, DX, DY);
+        StdDraw.line(CX, CY, BX, BY);
+//        StdDraw.setPenColor(StdDraw.BLUE);
+//        StdDraw.point(AX,AY);
+//        StdDraw.point(BX,BY);
+        StdDraw.setPenRadius(.009);
+        StdDraw.setPenColor(StdDraw.BOOK_RED);
+        StdDraw.point(EX,EY);
+
+            test(w+g,u ,DX,DY);
+            test(w-(90 - g),v ,EX,EY);
+    }
+//    private static void test2(double w, double l,double ax,double ay){
+//        test(w-90,l,ax,ay);
+//    }
 
 
 }
