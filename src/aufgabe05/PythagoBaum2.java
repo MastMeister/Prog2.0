@@ -1,13 +1,14 @@
 package aufgabe05;
-import java.util.Random;
 
 public class PythagoBaum2 {
     //private static double g = 45; // Der Winkel der Abzweigung Winkel bis 90 grad möglich theorethisch
     // Skaliert die länge der Äste in abhängigkeit der dicke/breite
-    public static final double SkalierungDickeLaenge = 4.0;
+    public static final double skalierung = 3.0;
+    public static final double anfangsBreite = 100;
+    public static final double anfangshoehe = 150;
+
 
     public static void main(String[] args) {
-        double omega = 30;
         StdDraw.setCanvasSize(1920,1080); // Fenstergröße einstellen
         StdDraw.setXscale(0 ,1920);
         StdDraw.setYscale(0,1080);
@@ -15,47 +16,43 @@ public class PythagoBaum2 {
         // rotiert mit winkel 30°
         StdDraw.show(0);
 
-        test(0,100,150,960,50);  // Startkoordinaten des Baumes und die Länge der Quadrate
+        test(0,anfangsBreite,anfangshoehe,960,50);  // Startkoordinaten des Baumes und die Länge der Quadrate
         StdDraw.show(0);
 //        test(0,100);
 //        StdDraw.show(0);
 
 
     }
-    private static void test(double w, double l,double he,double ax,double ay){
+    private static void test(double w, double laenge,double he,double ax,double ay){
         double g = (int) ((Math.random() *76)+10);
-        System.out.println("Winkel :" + w+"\n Länge :" + l);
-        if(l< 2 ) {
+        System.out.println("Winkel :" + w+"\n Länge :" + laenge);
+        if(laenge< 2 ) {
             return;
         }
-        if(l < 5 )
+        if(laenge < 5 )
             StdDraw.setPenColor(StdDraw.GREEN);
         else
             StdDraw.setPenColor(StdDraw.ORANGE);
         StdDraw.setPenRadius(.005);
         double winkel = Math.toRadians(w);
         double omega = Math.toRadians(g);
-        double lange = l;
-        double hoehe = he;
-        double AX = ax;
-        double AY = ay;
-        double c = lange * Math.cos(winkel);
-        double s = lange * Math.sin(winkel);
-        double ch = hoehe* Math.cos(winkel);
-        double sh = hoehe* Math.sin(winkel);
-        double BX = AX + c;
-        double BY = AY + s;
-        double CX = AX + c - sh;
-        double CY = AY + s + ch;
-        double DX = AX - sh;
-        double DY = AY + ch;
-        double u = lange*Math.cos(omega );
-        double v = lange*Math.sin(omega );
+        double c = laenge * Math.cos(winkel);
+        double s = laenge * Math.sin(winkel);
+        double ch = he * Math.cos(winkel);
+        double sh = he * Math.sin(winkel);
+        double BX = ax + c;
+        double BY = ay + s;
+        double CX = ax + c - sh;
+        double CY = ay + s + ch;
+        double DX = ax - sh;
+        double DY = ay + ch;
+        double u = laenge *Math.cos(omega );
+        double v = laenge *Math.sin(omega );
         double EX = DX + u*(Math.cos(winkel + omega));
         double EY = DY + u*Math.sin(winkel + omega);
 
        // StdDraw.line(AX, AY, BX, BY); // Ausgabe nicht erwwünscht
-        StdDraw.line(AX, AY, DX, DY);
+        StdDraw.line(ax, ay, DX, DY);
        // StdDraw.line(CX, CY, DX, DY); // Ausgabe nicht erwünscht
         StdDraw.line(CX, CY, BX, BY);
 
@@ -65,7 +62,7 @@ public class PythagoBaum2 {
 //        StdDraw.setPenRadius(.009);
 //        StdDraw.setPenColor(StdDraw.BOOK_RED);
 //        StdDraw.point(EX,EY);
-        double h = (int) (Math.random() *(SkalierungDickeLaenge*l)+1);
+        double h = (int) (Math.random() *(skalierung*laenge)+1);
         test(w+g ,u ,h,DX,DY);
         test(w-(90 - g),v,h,EX,EY);
 
