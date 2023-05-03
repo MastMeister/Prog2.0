@@ -3,11 +3,12 @@ import java.util.Random;
 
 public class PythagoBaum2 {
     //private static double g = 45; // Der Winkel der Abzweigung Winkel bis 90 grad möglich theorethisch
-    public static final double SkalierungDickeLaenge = 3.0;
+    // Skaliert die länge der Äste in abhängigkeit der dicke/breite
+    public static final double SkalierungDickeLaenge = 4.0;
 
     public static void main(String[] args) {
         double omega = 30;
-        StdDraw.setCanvasSize(1920,1080);
+        StdDraw.setCanvasSize(1920,1080); // Fenstergröße einstellen
         StdDraw.setXscale(0 ,1920);
         StdDraw.setYscale(0,1080);
         StdDraw.setPenRadius(.005);
@@ -53,9 +54,9 @@ public class PythagoBaum2 {
         double EX = DX + u*(Math.cos(winkel + omega));
         double EY = DY + u*Math.sin(winkel + omega);
 
-       // StdDraw.line(AX, AY, BX, BY);
+       // StdDraw.line(AX, AY, BX, BY); // Ausgabe nicht erwwünscht
         StdDraw.line(AX, AY, DX, DY);
-       // StdDraw.line(CX, CY, DX, DY);
+       // StdDraw.line(CX, CY, DX, DY); // Ausgabe nicht erwünscht
         StdDraw.line(CX, CY, BX, BY);
 
 //        StdDraw.setPenColor(StdDraw.BLUE);
