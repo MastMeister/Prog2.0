@@ -45,9 +45,9 @@ public class PythagoBaum1 {
         double EX = DX + u * (Math.cos(winkel + omega));
         double EY = DY + u * Math.sin(winkel + omega);
 
-        StdDraw.line(ax, ay, BX, BY);
+        //StdDraw.line(ax, ay, BX, BY);
         StdDraw.line(ax, ay, DX, DY);
-        StdDraw.line(CX, CY, DX, DY);
+        //StdDraw.line(CX, CY, DX, DY);
         StdDraw.line(CX, CY, BX, BY);
 //        StdDraw.setPenColor(StdDraw.BLUE);
 //        StdDraw.point(AX,AY);

@@ -16,7 +16,7 @@ public class PythagoBaum2 {
         // rotiert mit winkel 30°
         StdDraw.show(0);
 
-        test(0,anfangsBreite,anfangshoehe,960,50);  // Startkoordinaten des Baumes und die Länge der Quadrate
+        test(0,anfangsBreite,anfangshoehe,960,150);  // Startkoordinaten des Baumes und die Länge der Quadrate
         StdDraw.show(0);
 //        test(0,100);
 //        StdDraw.show(0);
@@ -24,9 +24,9 @@ public class PythagoBaum2 {
 
     }
     private static void test(double w, double laenge,double he,double ax,double ay){
-        double g = (int) ((Math.random() *76)+10);
+        double g = (int) ((Math.random() *80)+10);
         System.out.println("Winkel :" + w+"\n Länge :" + laenge);
-        if(laenge< 2 ) {
+        if(laenge< 1 ) {
             return;
         }
         if(laenge < 5 )
