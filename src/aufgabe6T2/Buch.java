@@ -18,13 +18,19 @@ public class Buch {
     public boolean wirdAusgeliehen(Person p){
         if(entleiher != null)
             return false;
+
        p.leihtAus(this);
         return true;
     }
 
     public  boolean wirdZurueckGegeben(){
-        entleiher = null;
+        if(entleiher != null) {
+            this.entleiher.gibtZurueck(this);
+            entleiher = null;
             return true;
+        }
+        return false;
+
     }
     public void print(){
         System.out.print(getName()+ " wurde ausgeliehen von : ");

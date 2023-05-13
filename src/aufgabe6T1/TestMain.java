@@ -2,7 +2,8 @@ package aufgabe6T1;
 
 public class TestMain {
     public static void main(String[] args) {
-
+//        Tatigkeit tk3 = new ParalleleTatigkeit();
+//        tk3.add(new ElementareTatigkeit("Test",4.0));
         Tatigkeit tk1 = new ParalleleTatigkeit();
         tk1.add(new ElementareTatigkeit("Linke Seitenwand montieren", 5.0));
         tk1.add(new ElementareTatigkeit("Rechte Seitenwand montieren", 5.0));
