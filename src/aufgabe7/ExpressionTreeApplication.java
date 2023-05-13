@@ -39,7 +39,7 @@ public class ExpressionTreeApplication {
                 = new Quotient(new Sum(new Sum(a, b), c), three);
 
         // Audruck e4 = a + (b + c)
-        Expression e4 = null;    // Vorsicht: Sie müssen e4 noch definieren.
+        Expression e4 = new Sum(a,new Sum(b,c));    // Vorsicht: Sie müssen e4 noch definieren.
 
         // Belegung alle Variablen als Map:
         Map<String, Double> varBel = new TreeMap<>();
