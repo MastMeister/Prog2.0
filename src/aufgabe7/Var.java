@@ -25,4 +25,9 @@ public class Var implements Expression{
         s.add(var);
         return s;
     }
+    @Override
+    public String toString(){
+
+        return var;
+    }
 }

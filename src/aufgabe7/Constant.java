@@ -21,4 +21,9 @@ public class Constant implements Expression{
         Set s = new TreeSet();
         return s;
     }
+    @Override
+    public String toString(){
+
+        return String.valueOf(aDouble);
+    }
 }

@@ -21,4 +21,14 @@ public abstract class CompoundExpression implements Expression{
 
         return s ;
     }
+    @Override
+    public String toString(){
+        StringBuilder s = new StringBuilder();
+        s.append("(");
+        s.append(a.toString());
+        s.append(b.toString());
+        s.append(")");
+
+        return s.toString();
+    }
 }

@@ -22,4 +22,15 @@ public class Sum extends CompoundExpression{
 
     return opera1 + opera2;
     }
+    @Override
+    public String toString(){
+        StringBuilder s = new StringBuilder();
+        s.append("(");
+        s.append(a.toString());
+        s.append("+");
+        s.append(b.toString());
+        s.append(")");
+
+        return s.toString();
+    }
 }
