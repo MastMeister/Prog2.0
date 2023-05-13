@@ -17,13 +17,12 @@ public class Quotient extends CompoundExpression{
     }
     @Override
     public String toString(){
-        StringBuilder s = new StringBuilder();
-        s.append("(");
-        s.append(a.toString());
-        s.append("/");
-        s.append(b.toString());
-        s.append(")");
+        String s = "(" +
+                a.toString() +
+                "/" +
+                b.toString() +
+                ")";
 
-        return s.toString();
+        return s;
     }
 }

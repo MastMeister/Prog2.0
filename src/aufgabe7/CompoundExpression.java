@@ -26,6 +26,8 @@ public abstract class CompoundExpression implements Expression{
         StringBuilder s = new StringBuilder();
         s.append("(");
         s.append(a.toString());
+        if(this instanceof Sum)
+            s.append("+");    // Auch möglich aber dann bräcuhte man keine Unterklassen mehr
         s.append(b.toString());
         s.append(")");
 
