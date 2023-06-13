@@ -1,7 +1,7 @@
 package aufgabe05;
 
 public class PythagoBaum1 {
-    private static final double g = 30; // Der Winkel der Abzweigung Winkel bis 90 grad möglich theorethisch
+    private static final double g = 15; // Der Winkel der Abzweigung Winkel bis 90 grad möglich theorethisch
     private static final double grueneBlaetter = 3; // Ab welcher Pixellänge der Quadrate die Blaetter gruen werden
     private static final double Anfangslaenge = 150; // Anfangslänge der Quadrate
 
@@ -45,9 +45,9 @@ public class PythagoBaum1 {
         double EX = DX + u * (Math.cos(winkel + omega));
         double EY = DY + u * Math.sin(winkel + omega);
 
-        //StdDraw.line(ax, ay, BX, BY);
+        StdDraw.line(ax, ay, BX, BY);
         StdDraw.line(ax, ay, DX, DY);
-        //StdDraw.line(CX, CY, DX, DY);
+        StdDraw.line(CX, CY, DX, DY);
         StdDraw.line(CX, CY, BX, BY);
 //        StdDraw.setPenColor(StdDraw.BLUE);
 //        StdDraw.point(AX,AY);
